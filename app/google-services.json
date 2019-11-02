@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "414957010288",
+    "firebase_url": "https://ecommerce-32515.firebaseio.com",
+    "project_id": "ecommerce-32515",
+    "storage_bucket": "ecommerce-32515.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414957010288:android:e7a4c5ea94f4155493a3b5",
+        "android_client_info": {
+          "package_name": "softagi.softagiecommerce"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414957010288-fmlm5vv3r21lrri2qd99stga30ooehp7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7n7kO3UdQ3RX7XxlcuKeyf5xPu17XCSc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "414957010288-fmlm5vv3r21lrri2qd99stga30ooehp7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
