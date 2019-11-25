@@ -167,7 +167,7 @@ public class HomeFragment extends Fragment
             String name = brandModel.getTitle();
             String categ = brandModel.getCateg();
             String img = brandModel.getImg();
-            List<ProductModel> productModels = brandModel.getProductModels();
+            String id = brandModel.getId();
 
             Picasso.get()
                     .load(img)
@@ -175,8 +175,7 @@ public class HomeFragment extends Fragment
 
             holder.brand_name.setText(name);
             holder.brand_categ.setText(categ);
-            //holder.product_rv.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-            //holder.product_rv.setAdapter(new productAdapter(productModels));
+            holder.setProducts(id);
         }
 
         @Override
@@ -233,6 +232,9 @@ public class HomeFragment extends Fragment
             CircleImageView brand_img;
             TextView brand_name,brand_categ;
             RecyclerView product_rv;
+            List<ProductModel> productModels;
+            DatabaseReference databaseReference;
+            productAdapter adapter;
 
             brandVH(@NonNull View itemView)
             {
@@ -242,6 +244,38 @@ public class HomeFragment extends Fragment
                 brand_name = itemView.findViewById(R.id.brand_title);
                 brand_categ = itemView.findViewById(R.id.brand_categ);
                 product_rv = itemView.findViewById(R.id.recyclerview);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false);
+                product_rv.setLayoutManager(layoutManager);
+
+                productModels = new ArrayList<>();
+                databaseReference = FirebaseDatabase.getInstance().getReference();
+            }
+
+            void setProducts(String id)
+            {
+                databaseReference.child("Products").child(id).addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+                    {
+                        productModels.clear();
+
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren())
+                        {
+                            ProductModel productModel = dataSnapshot1.getValue(ProductModel.class);
+                            productModels.add(productModel);
+                        }
+                        adapter = new productAdapter(productModels);
+                        product_rv.setAdapter(adapter);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError)
+                    {
+
+                    }
+                });
             }
         }
     }
@@ -269,10 +303,12 @@ public class HomeFragment extends Fragment
             ProductModel productModel = pp.get(position);
 
             String name = productModel.getTitle();
-            int img = productModel.getImg();
+            String img = productModel.getImg();
 
             holder.product_name.setText(name);
-            holder.product_img.setImageResource(img);
+            Picasso.get()
+                    .load(img)
+                    .into(holder.product_img);
         }
 
         @Override
@@ -286,7 +322,7 @@ public class HomeFragment extends Fragment
             ImageView product_img;
             TextView product_name;
 
-            public productVH(@NonNull View itemView)
+            productVH(@NonNull View itemView)
             {
                 super(itemView);
 

@@ -4,24 +4,25 @@ import java.util.List;
 
 public class BrandModel
 {
-    private String title,categ;
-    private String img;
-    private List<ProductModel> productModels;
+    private String title,categ,img,id;
 
     public BrandModel() {
     }
 
-    public BrandModel(String title, String categ, String img, List<ProductModel> productModels) {
+    public BrandModel(String title, String categ, String img, String id)
+    {
         this.title = title;
         this.categ = categ;
         this.img = img;
-        this.productModels = productModels;
+        this.id = id;
     }
 
-    public BrandModel(String title, String categ, String img) {
-        this.title = title;
-        this.categ = categ;
-        this.img = img;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -46,13 +47,5 @@ public class BrandModel
 
     public void setImg(String img) {
         this.img = img;
-    }
-
-    public List<ProductModel> getProductModels() {
-        return productModels;
-    }
-
-    public void setProductModels(List<ProductModel> productModels) {
-        this.productModels = productModels;
     }
 }

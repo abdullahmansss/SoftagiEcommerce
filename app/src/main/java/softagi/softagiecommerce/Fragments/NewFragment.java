@@ -18,7 +18,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -32,13 +31,15 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import softagi.softagiecommerce.LoginActivity;
 import softagi.softagiecommerce.Models.BrandModel;
+import softagi.softagiecommerce.Models.ProductModel;
 import softagi.softagiecommerce.R;
 
-public class AddNewBrandFragment extends Fragment
+public class NewFragment extends Fragment
 {
     View view;
+    String id;
+
     private CircleImageView brandImg;
     private Button saveBrandBtn;
     private EditText nameField;
@@ -52,10 +53,16 @@ public class AddNewBrandFragment extends Fragment
     private StorageReference storageReference;
     private ProgressDialog progressDialog;
 
+    NewFragment(String id)
+    {
+        this.id = id;
+    }
+
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.add_new_brand_fragment, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState)
+    {
+        view = inflater.inflate(R.layout.new_fragment, container,false);
         return view;
     }
 
@@ -63,6 +70,8 @@ public class AddNewBrandFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState)
     {
         super.onActivityCreated(savedInstanceState);
+
+        Toast.makeText(getContext(), id, Toast.LENGTH_SHORT).show();
 
         initView();
         initDialog();
@@ -146,10 +155,11 @@ public class AddNewBrandFragment extends Fragment
 
     private void addData(String name, String categ, String selectedimageurl)
     {
+        // title,price,img,id,brand_id
         String key = databaseReference.child("Brands").push().getKey();
 
-        BrandModel brandModel = new BrandModel(name,categ,selectedimageurl,key);
-        databaseReference.child("Brands").child(key).setValue(brandModel);
+        ProductModel productModel = new ProductModel(name,categ,selectedimageurl,key,id);
+        databaseReference.child("Products").child(id).child(key).setValue(productModel);
         progressDialog.dismiss();
     }
 
@@ -163,7 +173,7 @@ public class AddNewBrandFragment extends Fragment
                 CropImage.activity()
                         .setGuidelines(CropImageView.Guidelines.ON_TOUCH)
                         .setAspectRatio(1,1)
-                        .start(Objects.requireNonNull(getContext()), AddNewBrandFragment.this);
+                        .start(Objects.requireNonNull(getContext()), NewFragment.this);
 
             }
         });
